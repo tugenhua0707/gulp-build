@@ -1,0 +1,123 @@
+
+html
+  font-size 62.5%
+  background-color #F6F6F6
+  min-height 100%
+@media (min-width:375px)
+  html
+    font-size 70%
+@media (min-width:414px)
+  html
+    font-size 73%
+body
+  font-size 1.5rem
+  min-height 100%
+  img
+    vertical-align top
+  a
+    text-decoration none
+    color #000
+  .orangeBtn,.blueBtn,.moreBtn,.whiteBtn
+    color #fff
+    border 0 none
+    height 4.4rem
+    line-height 4.4rem
+    text-align center
+    display block
+    font-size 1.6rem
+    width 100%
+  .whiteBtn
+    border 1px solid orange
+    color orange
+    background-color #fff
+  .orangeBtn
+    background-color orange
+    &.disabled
+      background-color #ccc
+  .disabledBtn
+    background-color #ccc
+  .blueBtn
+    color blue
+    background-color #fff
+    height 4rem
+    line-height 4rem
+    font-size 1.4rem
+  .moreBtn
+    background-color #fff
+    color #666
+    height 4rem
+    line-height 4rem
+    font-size 1.2rem
+  .none
+    display none !important
+  .orange
+    color orange
+  .blue
+    color blue
+  .green
+    color green
+  .gray
+    color gray
+  .al
+    text-align left
+  .ar
+    text-align right
+  .ac
+    text-align center
+  .fl
+    float left
+  .fr
+    float right
+  .clearfix
+    clearfix()
+
+/*retina一像素*/
+.retina-border-bottom,.retina-border-top,.retina-border-right,.retina-border-left
+  position relative
+.retina-border-bottom:after,.retina-border-top:before,.retina-border-right:after,.retina-border-left:before
+  content ''
+  position absolute
+  background-color #DDDDDD
+  display block
+  vendor('transform-origin',50% 100%)
+.retina-border-bottom:after
+  left 0
+  bottom 0
+  height 1px
+  width 100%
+
+.retina-border-top:before
+  left 0
+  height 1px
+  width 100%
+
+.retina-border-right:after
+  bottom 0
+  right 0
+  top 0
+  height 100%
+  width 1px
+
+.retina-border-left:before
+  left 0
+  bottom 0
+  top 0
+  height 100%
+  width 1px
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2)
+  .retina-border-bottom:after ,.retina-border-top:before
+    transform scaleY(0.5)
+
+@media only screen and (-webkit-min-device-pixel-ratio: 3)
+  .retina-border-bottom:after,.retina-border-top:before
+    transform scaleY(0.33)
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2)
+  .retina-border-right:after ,.retina-border-left:before
+    transform scaleX(0.5)
+
+
+@media only screen and (-webkit-min-device-pixel-ratio: 3)
+  .retina-border-right:after,.retina-border-left:before
+    transform scaleX(0.33)
