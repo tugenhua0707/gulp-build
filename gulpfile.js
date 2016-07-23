@@ -17,7 +17,7 @@ var reactify      = require('reactify');
 var to5Browserify = require('6to5-browserify');
 var streamify     = require('gulp-streamify');
 var gulpif      = require('gulp-if');
-
+var md5         = require('md5');
 //自动刷新     
 var browserSync = require('browser-sync').create();
 var reload      = browserSync.reload;
@@ -55,11 +55,13 @@ gulp.task('css', ['clean-css'],function () {
          .pipe(replace({
             original : {
                 resProxy : /\@{3}RESPREFIX\@{3}/g,
-                prefix : /\@{3}PREFIX\@{3}/g
+                prefix : /\@{3}PREFIX\@{3}/g,
+                tbjAppVersion : /\@{3}TBJAPP_VERSION\@{3}/g
               },
               target : {
                 resProxy : resProxy,
-                prefix : prefix
+                prefix : prefix,
+                tbjAppVersion : md5(jsonObj.version)
               }
           }))
          .pipe(gulpif(!DEBUGGER, mincss()))
@@ -73,11 +75,13 @@ gulp.task('html',function(){
       .pipe(replace({
         original : {
             resProxy : /\@{3}RESPREFIX\@{3}/g,
-            prefix : /\@{3}PREFIX\@{3}/g
+            prefix : /\@{3}PREFIX\@{3}/g,
+            tbjAppVersion : /\@{3}TBJAPP_VERSION\@{3}/g
           },
           target : {
             resProxy : resProxy,
-            prefix : prefix
+            prefix : prefix,
+            tbjAppVersion : md5(jsonObj.version)
           }
        }))
       .pipe(gulp.dest(paths.build + "/"))
@@ -132,11 +136,13 @@ gulp.task("browserify",['libs'],function () {
       .pipe(replace({
         original : {
             resProxy : /\@{3}RESPREFIX\@{3}/g,
-            prefix : /\@{3}PREFIX\@{3}/g
+            prefix : /\@{3}PREFIX\@{3}/g,
+            tbjAppVersion : /\@{3}TBJAPP_VERSION\@{3}/g
           },
           target : {
             resProxy : resProxy,
-            prefix : prefix
+            prefix : prefix,
+            tbjAppVersion : md5(jsonObj.version)
           }
       }))
       .pipe(gulpif(!DEBUGGER, uglify()))

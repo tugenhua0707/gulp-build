@@ -37,6 +37,7 @@
     "gulp-watch": "^4.3.6",
     "gulp-wrap": "^0.13.0",
     "lodash.assign": "^4.0.9",
+    "md5": "^2.1.0",
     "node-glob": "^1.2.0",
     "reactify": "^1.1.0",
     "swiper": "^3.3.1",
