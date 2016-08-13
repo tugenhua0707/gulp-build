@@ -28,6 +28,7 @@ var jsonObj = JSON.parse(fileContent);
 
 var argv = process.argv.pop();
 var DEBUGGER = (argv === "-D" || argv === "-d") ? true : false;
+
 /* 基础路径 */
 var paths = {
   app       : "app", 
@@ -38,11 +39,9 @@ var paths = {
 var resProxy = "项目的真实路径";
 var prefix = "项目的真实路径" + jsonObj.name;
 
-var port = 4000;
-
 if(DEBUGGER) {
-  resProxy = "http://localhost:"+port+"/build";
-  prefix = "http://localhost:"+port+"/build";
+  resProxy = "http://localhost:3000/build";
+  prefix = "http://localhost:3000/build";
 }
 // 先清理文件
 gulp.task('clean-css',function(){
@@ -101,8 +100,22 @@ gulp.task('libs',function(){
          .pipe(gulp.dest(paths.build + "/libs"))
          .pipe(reload({stream:true})); 
 });
-
-
+// 创建本地服务器，并且实时更新页面文件
+gulp.task('browser-sync', ['css','html','browserify'],function() {
+    var files = [
+      '**/*.html',
+      '**/*.css',
+      '**/*.styl',
+      '**/*.js'
+    ]; 
+    browserSync.init(files,{
+   
+        server: {
+            //baseDir: "./html"
+        }
+        
+    });
+});
 
 // 解决js模块化及依赖的问题
 gulp.task("browserify",['libs'],function () {
@@ -138,50 +151,13 @@ gulp.task("browserify",['libs'],function () {
     };
 });
 
-// 模拟数据 使用gulp-webserver 创建本地服务器
-var webserver = require('gulp-webserver');
-var url = require('url');
-var indexJSON = require('./app/json/index.js');
-gulp.task('web-server',['css','html','browserify'],function(){
-  gulp.src('./')
-  .pipe(webserver({
-    livereload: true,
-    directoryListing: {
-      enable: true,
-      path: 'json'
-    },
-    port: port,
-    fallback: '*.html',
-    middleware: function(req,res,next) {
-      var urlObj = url.parse(req.url,true);
-      switch(urlObj.pathname) {
-        case '/index':
-         res.setHeader('Content-Type','application/json');
-         res.end(JSON.stringify(indexJSON));
-         return;
 
-         case '/api/xx' :
-          var data = {
-             'isSuccess': true,
-             data: [{}]
-           };
-           res.setHeader('Content-Type','application/json');
-           res.end(JSON.stringify(data));
-           return;
-      }
-      next();
-    }
-  }))
-});
-
-gulp.task('default',['css','html','images','web-server'],function () {
-    gulp.watch(["**/*.styl"], ['css']);
-    gulp.watch("**/*.html", ['html']);
-});
-
-gulp.task('server', ['images','web-server'],function () {
+gulp.task('default',['css','html','images','browserify'],function () {
     gulp.watch(["**/*.styl"], ['css','browserify']);
     gulp.watch("**/*.html", ['html','browserify']);
 });
 
-
+gulp.task('server', ['browser-sync','images'],function () {
+    gulp.watch(["**/*.styl"], ['css','browserify']);
+    gulp.watch("**/*.html", ['html','browserify']);
+});
